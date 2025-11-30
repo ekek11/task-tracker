@@ -1,10 +1,22 @@
-tasks = []
+import json
 
-def add_task(task_name):
+def load_tasks():
+    try:
+        with open("tasks.json", "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return[]
+
+def save_tasks(tasks):
+    with open("tasks.json", "w") as file:
+        json.dump(tasks, file)
+
+def add_task(tasks, task_name):
     tasks.append(task_name)
+    save_tasks(tasks)
     print(f"Added: {task_name}")
 
-def list_tasks():
+def list_tasks(tasks):
     if not tasks:
         print("No tasks yet.")
     else:
@@ -12,14 +24,16 @@ def list_tasks():
             print(f"{i}. {task}")
 
 def main():
+    tasks = load_tasks()
+    
     while True:
             command = input("\nEnter command (add/list/quit): ")
             
             if command == "add":
                 task_name = input("Task name: ")
-                add_task(task_name)
+                add_task(tasks, task_name)
             elif command == "list":
-                list_tasks()
+                list_tasks(tasks)
             elif command == "quit":
                 print("Goodbye!")
                 break
