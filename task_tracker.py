@@ -22,6 +22,18 @@ def list_tasks(tasks):
     else:
         for i, task in enumerate(tasks, 1):
             print(f"{i}. {task}")
+            
+def complete_task(tasks, task_number):
+    try:
+        index = task_number - 1
+        if index < 0:
+            print("Invalid task number.")
+            return
+        removed = tasks.pop(index)
+        save_tasks(tasks)
+        print(f"Completed: {removed}")
+    except IndexError:
+        print("Task not found.")
 
 def main():
     tasks = load_tasks()
@@ -34,11 +46,15 @@ def main():
                 add_task(tasks, task_name)
             elif command == "list":
                 list_tasks(tasks)
+            elif command == "done":
+                list_tasks(tasks)
+                task_number = input("Task number to complete: ")
+                complete_task(tasks, int(task_number))
             elif command == "quit":
                 print("Goodbye!")
                 break
             else:
-                print("Uknown command.  Try add, list or quit.")
+                print("Uknown command.  Try add, list, done, or quit.")
                 
 main()
 
